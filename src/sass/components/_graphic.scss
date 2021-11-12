@@ -1,0 +1,36 @@
+.graphic {
+  width: 100%;
+  min-width: 50rem;
+  margin: 0 auto;
+
+  &__row {
+    display: block;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    @include clearfix;
+
+    &--drop {
+      float: left;
+      position: relative;
+      background-color: $white;
+      display: inline-block;
+      width: calc((100% - 4rem * 3) / 4);
+      height: 10rem;
+      padding: 1rem;
+      border: 1px solid $secondary;
+      border-radius: 3px;
+      text-align: center;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+
+    &--drag {
+      height: 10rem;
+      @include centerHV;
+    }
+  }
+}
