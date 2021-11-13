@@ -1,4 +1,4 @@
-import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree} from './views/base';
+import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree, showDashboard} from './views/base';
 import swal from 'sweetalert';
 import User from './models/userModel';
 import Users from './models/allusers';
@@ -8,6 +8,7 @@ const state = {};
 window.addEventListener('load', () => {
     state.users = new Users();
     state.users.restore();
+    //showDashboard()
 });
 
 // Registeration Controller

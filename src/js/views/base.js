@@ -1,12 +1,12 @@
 import * as Grid from './gridView';
-
+import {dashboardpage} from "./dashboard"
 export const elements = {
     loginTop: document.querySelector('#login'),
     registerTop: document.querySelector('#register'),
     register: document.querySelector('.register'),
     login: document.querySelector('.login'),
     remove: document.querySelector('#remove'),
-    mainBody:document.getElementsByName("body")
+    mainBody:document.body
 };
 
 export const elementStrings = {
@@ -177,5 +177,5 @@ export const renderThree = (type) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const showDashboard = ()=>{
-    
+    elements.mainBody.innerHTML = dashboardpage
 }
