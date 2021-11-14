@@ -4,7 +4,7 @@
   "description": "A graphical password authentication system that uses three levels of authentication",
   "main": "index.js",
   "scripts": {
-    "watch:sass": "node-sass src/sass/main.scss dist/css/style.css -w",
+    "watch:sass": "sass src/sass/main.scss dist/css/style.css -w",
     "dev": "webpack --mode development",
     "build": "webpack",
     "start": "webpack-dev-server --mode development --open"

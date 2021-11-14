@@ -259,12 +259,81 @@ body {
   text-align: center;
 }
 
-.button_container {
+.db_main_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.db_button_container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin: 30px;
   width: 100%;
+}
+
+.db_addfile {
+  padding: 10px 15px;
+  border-radius: 6px;
+  background-color: #db5400;
+  color: white;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  border-color: white;
+  border-style: solid;
+}
+
+.db_addfile:hover {
+  background-color: #bd4800;
+  cursor: pointer;
+}
+
+.db_list_container {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.db_list_header_container {
+  display: flex;
+  background-color: #45403d;
+  border-radius: 5px;
+  flex-direction: row;
+}
+
+.db_header_cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  height: 30px;
+  width: 200px;
+}
+
+.db_list_row_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.db_row {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  justify-content: flex-start;
+}
+
+.db_row_cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 40px;
 }
 
 /*# sourceMappingURL=style.css.map */

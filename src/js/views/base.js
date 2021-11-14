@@ -1,12 +1,14 @@
 import * as Grid from './gridView';
-import {dashboardpage} from "./dashboard"
+
 export const elements = {
     loginTop: document.querySelector('#login'),
     registerTop: document.querySelector('#register'),
     register: document.querySelector('.register'),
     login: document.querySelector('.login'),
     remove: document.querySelector('#remove'),
-    mainBody:document.body
+    mainBody:document.body,
+    newfile_btn:document.querySelector("#addfile_btn"),
+    file_delete_btns:document.getElementsByClassName("file_delete_btn"),
 };
 
 export const elementStrings = {
@@ -176,6 +178,3 @@ export const renderThree = (type) => {
 /*                                                    dashboard                                                */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const showDashboard = ()=>{
-    elements.mainBody.innerHTML = dashboardpage
-}

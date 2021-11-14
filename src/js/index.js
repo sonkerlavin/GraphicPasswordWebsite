@@ -1,14 +1,15 @@
-import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree, showDashboard} from './views/base';
+import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree} from './views/base';
 import swal from 'sweetalert';
 import User from './models/userModel';
 import Users from './models/allusers';
-
+import { FileDB } from './models/UserFile';
+import {dashboardpage,addFiles} from "./views/dashboard"
 // Reloads
 const state = {};
 window.addEventListener('load', () => {
+    state.filedb = new FileDB()
     state.users = new Users();
-    state.users.restore();
-    //showDashboard()
+    
 });
 
 // Registeration Controller
@@ -147,7 +148,7 @@ elements.login.addEventListener('click', e => {
 
         if(graphicMatch) {
             clear();
-            swal('Log in successful!');
+            showDashboard()
         }
     }
 });
@@ -232,6 +233,35 @@ elements.remove.addEventListener('click', () => {
         state.users.reset();
         state.users = new Users();
     }
-
     clear();
 })
+
+const showDashboard = ()=>{
+    let rows = addFiles(state.filedb.getAllFiles())
+    let dashboard = ``
+    if (rows.length){
+        dashboard = dashboardpage.replace("%_rows%",rows)
+    }
+    else{
+        dashboard = dashboardpage.replace("%_rows%","Nothing to show")
+    }
+    elements.mainBody.innerHTML = dashboard
+    setDeletebtn()
+}
+
+const setDeletebtn = ()=>{
+    console.log("setting")
+    for (let i = 0; i < elements.file_delete_btns.length; i++) {
+        elements.file_delete_btns.item(i).addEventListener("click",(e)=>{
+            deleteFile(e.path[2].getElementsByTagName("input")[0].value)
+        })
+    }
+}
+
+// file delete controll
+
+export const deleteFile = (key)=>{
+    state.filedb.removefile(key)
+} 
+
+
