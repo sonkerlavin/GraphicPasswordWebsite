@@ -19,6 +19,7 @@ export class FileDB{
         }
         allfiles.push(file)
         localStorage.setItem("allfiles",JSON.stringify(allfiles))
+        this.loadAllFiles()
     }
     loadAllFiles(){
         this.allfiles = JSON.parse(localStorage.getItem("allfiles"))

@@ -268,9 +268,8 @@ const setDeletebtn = ()=>{
     console.log("setting")
     for (let i = 0; i < elements.file_delete_btns.length; i++) {
         elements.file_delete_btns.item(i).addEventListener("click",(e)=>{
-            console.log(e.path[2].getElementsByTagName("input")[0].value)
             deleteFile(e.path[2].getElementsByTagName("input")[0].value)
-            console.log(state.filedb.getAllFiles())
+            showDashboard()
         })
     }
 }
@@ -285,6 +284,7 @@ export const showAddFile = ()=>{
         data.link = document.getElementsByName("file_link").item(0).value
         data.key = (Number.parseInt((Math.random()*1000).toString())).toString()
         state.filedb.addFile(data)
+        showDashboard()
     })
 }
 

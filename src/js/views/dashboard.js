@@ -1,14 +1,14 @@
 export const tablerow = `
             <div class = "db_row" style = "background-color:%_table_row_bg%">
             <input type = 'text' value = "%file_key%" hidden/>
-                <div class = "db_row_cell">
+                <div class = "db_row_cell" style = "width:40px;">
                     <img src = "https://findicons.com/files/icons/2813/flat_jewels/512/file.png" height = 30px width = 30px />
                 </div>
                 <div class = "db_row_cell"'>
-                    %_title%
+                    <span style = "font-size:15px;">%_title%</span>
                 </div>
                 
-                <div class = "db_row_cell">
+                <div class = "db_row_cell" style = "margin:0px 20px;">
                     <a href = '%_link%'>%_link%</a>
                 </div>
                 <div class = "db_row_cell">
@@ -23,14 +23,14 @@ export const dashboardpage = `
     </div>
     <div class = "db_list_container">
         <div class = "db_list_header_container">
-            <div class = "db_header_cell">
+            <div class = "db_header_cell" style = "width:40px;">
                 #
             </div>
             <div class = "db_header_cell">
                 Title
             </div>
             
-            <div class = "db_header_cell">
+            <div class = "db_header_cell" style = "margin:0px 20px;">
                 Drive Link
             </div>
             <div class = "db_header_cell">
@@ -48,7 +48,6 @@ export const addFiles = (files)=>{
     let rows = ``
     let bg = "#d1d1d1"
     files.forEach(file => {
-        console.log(file)
         let row = tablerow
         row = row.replace("%_table_row_bg%",bg)
         row = row.replace("%_title%",file.title)
