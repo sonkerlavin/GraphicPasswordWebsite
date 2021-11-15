@@ -7,7 +7,8 @@ export const elements = {
     login: document.querySelector('.login'),
     remove: document.querySelector('#remove'),
     mainBody:document.body,
-    newfile_btn:document.querySelector("#addfile_btn"),
+    newfile_btn:document.getElementsByClassName("db_addfile"),
+    addFile_btn:document.getElementsByClassName("bn33"),
     file_delete_btns:document.getElementsByClassName("file_delete_btn"),
 };
 
@@ -174,7 +175,4 @@ export const renderThree = (type) => {
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*                                                    dashboard                                                */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

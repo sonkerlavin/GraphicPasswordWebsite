@@ -10,10 +10,13 @@ export class FileDB{
     addFile(data){
         const file = {
             title:data.title,
-            description:data.description,
-            link:data.link
+            link:data.link,
+            key:data.key
         }
-        allfiles = JSON.parse(localStorage.getItem("allfiles"))
+        let allfiles = JSON.parse(localStorage.getItem("allfiles"))
+        if(!allfiles){
+            allfiles = []
+        }
         allfiles.push(file)
         localStorage.setItem("allfiles",JSON.stringify(allfiles))
     }
@@ -24,7 +27,11 @@ export class FileDB{
         return this.allfiles
     }
     removefile(key){
-        localStorage.removeItem(key)
+        let files = this.getAllFiles()
+        files = files.filter((val)=>{
+            return  val.key != key
+        })
+        localStorage.setItem("allfiles",JSON.stringify(files))
         this.loadAllFiles()
     }
 }

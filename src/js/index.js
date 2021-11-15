@@ -4,12 +4,13 @@ import User from './models/userModel';
 import Users from './models/allusers';
 import { FileDB } from './models/UserFile';
 import {dashboardpage,addFiles} from "./views/dashboard"
+import {addfileform} from "./views/Addfiles"
 // Reloads
 const state = {};
 window.addEventListener('load', () => {
     state.filedb = new FileDB()
     state.users = new Users();
-    
+    showDashboard()
 });
 
 // Registeration Controller
@@ -149,6 +150,7 @@ elements.login.addEventListener('click', e => {
         if(graphicMatch) {
             clear();
             showDashboard()
+            
         }
     }
 });
@@ -233,8 +235,12 @@ elements.remove.addEventListener('click', () => {
         state.users.reset();
         state.users = new Users();
     }
-    clear();
+ clear();
 })
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*                                                    dashboard                                                */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const showDashboard = ()=>{
     let rows = addFiles(state.filedb.getAllFiles())
@@ -246,22 +252,41 @@ const showDashboard = ()=>{
         dashboard = dashboardpage.replace("%_rows%","Nothing to show")
     }
     elements.mainBody.innerHTML = dashboard
+    elements.newfile_btn.item(0).addEventListener("click",(e)=>{
+        showAddFile()
+    })
     setDeletebtn()
-}
-
-const setDeletebtn = ()=>{
-    console.log("setting")
-    for (let i = 0; i < elements.file_delete_btns.length; i++) {
-        elements.file_delete_btns.item(i).addEventListener("click",(e)=>{
-            deleteFile(e.path[2].getElementsByTagName("input")[0].value)
-        })
-    }
 }
 
 // file delete controll
 
 export const deleteFile = (key)=>{
     state.filedb.removefile(key)
-} 
+}
+
+const setDeletebtn = ()=>{
+    console.log("setting")
+    for (let i = 0; i < elements.file_delete_btns.length; i++) {
+        elements.file_delete_btns.item(i).addEventListener("click",(e)=>{
+            console.log(e.path[2].getElementsByTagName("input")[0].value)
+            deleteFile(e.path[2].getElementsByTagName("input")[0].value)
+            console.log(state.filedb.getAllFiles())
+        })
+    }
+}
+
+
+// addfiles show
+export const showAddFile = ()=>{
+    elements.mainBody.innerHTML = addfileform
+    elements.addFile_btn.item(0).addEventListener("click",(e)=>{
+        let data = {}
+        data.title = document.getElementsByName("file_name").item(0).value
+        data.link = document.getElementsByName("file_link").item(0).value
+        data.key = (Number.parseInt((Math.random()*1000).toString())).toString()
+        state.filedb.addFile(data)
+    })
+}
+
 
 
