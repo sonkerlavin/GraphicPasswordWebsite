@@ -11,9 +11,7 @@ const state = {};
 window.addEventListener('load', () => {
     state.filedb = new FileDB()
     state.users = new Users();
-    if(localStorage.getItem("curr_user")){
-        showDashboard()
-    }
+    
     //document.body.innerHTML = getPreviewScreen("1cstQmXvVCsdVAze5NmzTfIPt4Y7oE_RR")
 });
 
@@ -261,7 +259,6 @@ const showDashboard = ()=>{
     elements.newfile_btn.item(0).addEventListener("click",(e)=>{
         showAddFile()
     })
-    console.log(elements)
     setDeletebtn()
     setPreviewbtn()
 }

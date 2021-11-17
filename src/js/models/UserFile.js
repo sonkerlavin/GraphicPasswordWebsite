@@ -1,45 +1,63 @@
 export class FileDB{
     constructor(){
         this.allfiles = []
-        this.loadAllFiles()
-        if(!this.allfiles){
-            localStorage.setItem("allfiles",JSON.stringify([]))
-            this.allfiles = this.loadAllFiles()
-        }        
+        this.loadAllFiles()     
     }
     addFile(data){
-        let user = localStorage.getItem("curr_user")
+        let user = JSON.parse(localStorage.getItem("curr_user"))
         let alluser = JSON.parse(localStorage.getItem("users"))
         const file = {
             title:data.title,
             link:data.link,
             key:data.key
         }
-        let allfiles = JSON.parse(localStorage.getItem("allfiles"))
-        if(!allfiles){
-            allfiles = []
-        }
-        allfiles.push(file)
+        this.allfiles.push(file)
         let new_users = alluser.map((u)=>{
             if(u.username == user){
-                u.files.push(allfiles)
+                u.files = this.allfiles
+                console.log(u.files)
             }
+            return u
         })
+        
         localStorage.setItem("users",JSON.stringify(new_users))
         this.loadAllFiles()
     }
     loadAllFiles(){
-        this.allfiles = JSON.parse(localStorage.getItem("allfiles"))
+        let user = JSON.parse(localStorage.getItem("curr_user"))
+        let alluser = JSON.parse(localStorage.getItem("users"))
+        let allfiles = []
+        if(! alluser){
+            return
+        }
+        alluser.map((u)=>{
+            if(u.username == user){
+                allfiles = u.files
+            }
+        })
+        this.allfiles = allfiles
     }
     getAllFiles(){
+        this.loadAllFiles()
         return this.allfiles
     }
     removefile(key){
         let files = this.getAllFiles()
         files = files.filter((val)=>{
+            console.log(val)
             return  val.key != key
         })
-        localStorage.setItem("allfiles",JSON.stringify(files))
+        
+        let user = JSON.parse(localStorage.getItem("curr_user"))
+        let alluser = JSON.parse(localStorage.getItem("users"))
+        let new_users = alluser.map((u)=>{
+            if(u.username == user){
+                u.files = files
+            }
+            return u
+        })
+        
+        localStorage.setItem("users",JSON.stringify(new_users))
         this.loadAllFiles()
     }
 }
