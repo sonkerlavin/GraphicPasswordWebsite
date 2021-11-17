@@ -432,4 +432,30 @@ body {
   color: white;
 }
 
+.preview_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 202vh;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.preview_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 700px;
+}
+
+.preview_close_btn {
+  position: absolute;
+  right: 30px;
+  top: 0;
+}
+
 /*# sourceMappingURL=style.css.map */

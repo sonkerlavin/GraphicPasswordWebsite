@@ -17,6 +17,7 @@ export default class User {
 
         this.username = username;
         this.password = this.encrypt(password);
+        this.files = []
         return true;
     }
 

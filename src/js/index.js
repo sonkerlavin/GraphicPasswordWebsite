@@ -5,12 +5,16 @@ import Users from './models/allusers';
 import { FileDB } from './models/UserFile';
 import {dashboardpage,addFiles} from "./views/dashboard"
 import {addfileform} from "./views/Addfiles"
+import { getDocId, getPreviewScreen } from './views/PreviewScreen';
 // Reloads
 const state = {};
 window.addEventListener('load', () => {
     state.filedb = new FileDB()
     state.users = new Users();
-    showDashboard()
+    if(localStorage.getItem("curr_user")){
+        showDashboard()
+    }
+    //document.body.innerHTML = getPreviewScreen("1cstQmXvVCsdVAze5NmzTfIPt4Y7oE_RR")
 });
 
 // Registeration Controller
@@ -158,20 +162,22 @@ elements.login.addEventListener('click', e => {
 const oLevelOne = (users) => {
 
     if(document.querySelector(elementStrings.formOne).checkValidity()) {
-        const found = users.getAllUsers().find(el => el.username === document.querySelector(elementStrings.username).value);
+        let user = document.querySelector(elementStrings.username).value
+        let passw = document.querySelector(elementStrings.password).value
+        const found = users.getAllUsers().find(el => el.username === user);
         if(!found) {
             swal('There is no matching account for the username you entered!');
             return false;
         }
         state.current = found;
         Object.setPrototypeOf(state.current, User.prototype);
-        const match = state.current.comparePassword(document.querySelector(elementStrings.password).value);
+        const match = state.current.comparePassword(passw);
 
         if(!match) {
             swal('Username and password do not match!');
             return false;
         }
-        
+        localStorage.setItem("curr_user",JSON.stringify(user))
         return true;
     }
 };
@@ -255,7 +261,9 @@ const showDashboard = ()=>{
     elements.newfile_btn.item(0).addEventListener("click",(e)=>{
         showAddFile()
     })
+    console.log(elements)
     setDeletebtn()
+    setPreviewbtn()
 }
 
 // file delete controll
@@ -265,7 +273,6 @@ export const deleteFile = (key)=>{
 }
 
 const setDeletebtn = ()=>{
-    console.log("setting")
     for (let i = 0; i < elements.file_delete_btns.length; i++) {
         elements.file_delete_btns.item(i).addEventListener("click",(e)=>{
             deleteFile(e.path[2].getElementsByTagName("input")[0].value)
@@ -274,7 +281,23 @@ const setDeletebtn = ()=>{
     }
 }
 
-
+const setPreviewbtn = ()=>{
+    console.log("preview btn")
+    for (let i = 0; i < elements.preview_btns.length; i++) {
+        elements.preview_btns.item(i).addEventListener("click",(e)=>{
+            let url = e.path[2].getElementsByTagName("a")[0].href
+            let doc_id = getDocId(url)
+            let previewscreen = getPreviewScreen(doc_id)
+            elements.preview[0].innerHTML = previewscreen
+            setPreviewClosebtn()
+        })
+    }
+}
+const setPreviewClosebtn = ()=>{
+    elements.preview_close_btn[0].addEventListener("click",()=>{
+        showDashboard()
+    })
+}
 // addfiles show
 export const showAddFile = ()=>{
     elements.mainBody.innerHTML = addfileform
@@ -287,6 +310,4 @@ export const showAddFile = ()=>{
         showDashboard()
     })
 }
-
-
 

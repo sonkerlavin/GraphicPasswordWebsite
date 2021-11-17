@@ -2,7 +2,7 @@ export const tablerow = `
             <div class = "db_row" style = "background-color:%_table_row_bg%">
             <input type = 'text' value = "%file_key%" hidden/>
                 <div class = "db_row_cell" style = "width:40px;">
-                    <img src = "https://findicons.com/files/icons/2813/flat_jewels/512/file.png" height = 30px width = 30px />
+                    <img src = "https://findicons.com/files/icons/2813/flat_jewels/512/file.png" class = "preview_btn" height = 30px width = 30px />
                 </div>
                 <div class = "db_row_cell"'>
                     <span style = "font-size:15px;">%_title%</span>
@@ -40,6 +40,8 @@ export const dashboardpage = `
         <div class = "db_list_row_container">
         %_rows%
         </div>
+    </div>
+    <div class = "preview">
     </div>
 </div>
 `

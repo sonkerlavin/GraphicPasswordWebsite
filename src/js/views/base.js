@@ -10,6 +10,9 @@ export const elements = {
     newfile_btn:document.getElementsByClassName("db_addfile"),
     addFile_btn:document.getElementsByClassName("bn33"),
     file_delete_btns:document.getElementsByClassName("file_delete_btn"),
+    preview_btns:document.getElementsByClassName("preview_btn"),
+    preview_close_btn:document.getElementsByClassName("preview_close_btn"),
+    preview:document.getElementsByClassName("preview")
 };
 
 export const elementStrings = {

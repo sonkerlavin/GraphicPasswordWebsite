@@ -8,6 +8,8 @@ export class FileDB{
         }        
     }
     addFile(data){
+        let user = localStorage.getItem("curr_user")
+        let alluser = JSON.parse(localStorage.getItem("users"))
         const file = {
             title:data.title,
             link:data.link,
@@ -18,7 +20,12 @@ export class FileDB{
             allfiles = []
         }
         allfiles.push(file)
-        localStorage.setItem("allfiles",JSON.stringify(allfiles))
+        let new_users = alluser.map((u)=>{
+            if(u.username == user){
+                u.files.push(allfiles)
+            }
+        })
+        localStorage.setItem("users",JSON.stringify(new_users))
         this.loadAllFiles()
     }
     loadAllFiles(){
