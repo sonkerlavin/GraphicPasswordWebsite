@@ -10,7 +10,11 @@ export default class Users {
     
     addUser(user) {
         this.users.push(user);
-        localStorage.setItem('users', JSON.stringify(this.users));
+        return axios.post("http://127.0.0.1:5000/api/adduser",user).then(e=>{
+            let message = e.data.message
+            return message
+        })
+        //localStorage.setItem('users', JSON.stringify(this.users));
     };
     
     restore() {

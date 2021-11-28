@@ -56,8 +56,16 @@ elements.register.addEventListener('click', e => {
     if(e.target.matches(elementStrings.nextHR)) {
         rLevelThree();
         clear();
-        state.users.addUser(state.current);
-        swal('Registration successful!');
+        let message = state.users.addUser(state.current);
+        message.then(e=>{
+            if(e == "success"){
+                swal('Registration successful!');
+            }
+            else{
+                swal('Registration Fail!');
+            }
+        })
+        
     }
 });
 

@@ -11,6 +11,6 @@ export const getPreviewScreen = (id)=>{
     return PreviewScreen.replace("%_doc_id%",id)
 }
 export const getDocId = (url)=>{
-    //https://drive.google.com/file/d/1cstQmXvVCsdVAze5NmzTfIPt4Y7oE_RR/view?usp=sharing
+    //https://drive.google.com/file/d/1cstQnXvVCsdVAze5NmzTfIPt4Y7oE_RR/view?usp=sharing
     return url.split("/")[5]
 }
