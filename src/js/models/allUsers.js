@@ -5,7 +5,7 @@ export default class Users {
     }
 
     getAllUsers() {
-        return this.users;
+        return this.users
     }; 
     
     addUser(user) {
@@ -18,15 +18,12 @@ export default class Users {
     };
     
     restore() {
-        const storage = JSON.parse(localStorage.getItem('users'));
-        if(storage) {
-            this.users = storage;
-        }
+        axios.post("http://127.0.0.1:5000/api/getalluser").then(e=>{
+            this.users = e.data
+        })
     };
 
     reset() {
-        if(JSON.parse(localStorage.getItem('users'))) {
-            localStorage.removeItem('users');
-        }
+        axios.post("http://127.0.0.1:5000/api/resetuser")
     }
 }

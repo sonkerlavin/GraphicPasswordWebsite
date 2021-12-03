@@ -1,64 +1,67 @@
 export class FileDB{
     constructor(){
         this.allfiles = []
-        this.loadAllFiles()     
+            
     }
-    addFile(data){
-        let user = JSON.parse(localStorage.getItem("curr_user"))
-        let alluser = JSON.parse(localStorage.getItem("users"))
-        const file = {
-            title:data.title,
-            link:data.link,
-            key:data.key
-        }
-        this.allfiles.push(file)
-        let new_users = alluser.map((u)=>{
-            if(u.username == user){
-                u.files = this.allfiles
-                console.log(u.files)
-            }
-            return u
+    addFile(user){
+        let inp = `<input type = "number" hidden name = "user_id" value = ${user.id} />`
+        $("#upload-file").append(inp)
+        var form_data = new FormData($('#upload-file')[0]);
+        console.log(form_data)
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:5000/api/addfile',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(e) {
+                swal('File uploaded');
+            },
+        })
+        //this.loadAllFiles()
+    }
+    loadAllFiles(userid){
+        return axios.post("http://127.0.0.1:5000/api/allfiles",{userid:userid.id}).then(e=>{
+            this.allfiles = e.data
+            return this.allfiles
+        })
+    }
+    getAllFiles(userid){
+        
+        return this.loadAllFiles(userid).then(e=>{
+            this.allfiles = e
+            return this.allfiles
         })
         
-        localStorage.setItem("users",JSON.stringify(new_users))
-        this.loadAllFiles()
-    }
-    loadAllFiles(){
-        let user = JSON.parse(localStorage.getItem("curr_user"))
-        let alluser = JSON.parse(localStorage.getItem("users"))
-        let allfiles = []
-        if(! alluser){
-            return
-        }
-        alluser.map((u)=>{
-            if(u.username == user){
-                allfiles = u.files
-            }
-        })
-        this.allfiles = allfiles
-    }
-    getAllFiles(){
-        this.loadAllFiles()
-        return this.allfiles
     }
     removefile(key){
-        let files = this.getAllFiles()
-        files = files.filter((val)=>{
-            console.log(val)
-            return  val.key != key
+        return axios.post("http://127.0.0.1:5000/api/deletefile",{key:key}).then(e=>{
+            console.log(e)
         })
-        
-        let user = JSON.parse(localStorage.getItem("curr_user"))
-        let alluser = JSON.parse(localStorage.getItem("users"))
-        let new_users = alluser.map((u)=>{
-            if(u.username == user){
-                u.files = files
-            }
-            return u
+    }
+    addFolder(user){
+        let form = document.getElementById("folder_form")
+        let folder_input = document.getElementById("folder_input")
+        folder_input.click()
+        folder_input.addEventListener("change",(e)=>{
+            console.log(e)
+            let inp = `<input type = "number" hidden name = "user_id" value = ${user.id} />`
+            $("#folder_form").append(inp)
+            let form_data = new FormData(form)
+            $.ajax({
+                type: 'POST',
+                url: 'http://127.0.0.1:5000/api/addfolder',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(e) {
+                    folder_input.value = ""
+                    swal('Folder uploaded');
+                },
+            })
         })
-        
-        localStorage.setItem("users",JSON.stringify(new_users))
-        this.loadAllFiles()
     }
 }
 

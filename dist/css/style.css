@@ -269,7 +269,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 30px;
+  margin: 10px 30px;
   width: 100%;
 }
 
@@ -285,8 +285,25 @@ body {
   border-style: solid;
 }
 
+.db_addfolder {
+  padding: 10px 15px;
+  border-radius: 6px;
+  background-color: #3edb00;
+  color: white;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  border-color: white;
+  border-style: solid;
+}
+
 .db_addfile:hover {
   background-color: #bd4800;
+  cursor: pointer;
+}
+
+.db_addfolder:hover {
+  background-color: #2fa700;
   cursor: pointer;
 }
 

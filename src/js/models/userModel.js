@@ -5,6 +5,7 @@ export default class User {
     }
 
     addUsernameAndPassword(username, password, allUsers) {
+        console.log(allUsers)
         const a = allUsers.map(el => {
             if(el.username === username) {
                 return false;
@@ -29,15 +30,15 @@ export default class User {
     }
 
     comparePassword(password) {
-        return this.password === this.encrypt(password);
+        return this.textpassword === this.encrypt(password);
     }
 
     comparePattern(pattern) {
-        return this.pattern === this.encrypt(pattern);
+        return this.colorpassword === this.encrypt(pattern);
     }
 
     compareGrid(grid) {
-        return this.grid === this.encrypt(grid);
+        return this.gridpassword === this.encrypt(grid);
     }
 
     encrypt(text) {

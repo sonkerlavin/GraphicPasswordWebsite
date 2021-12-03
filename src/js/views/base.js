@@ -8,11 +8,15 @@ export const elements = {
     remove: document.querySelector('#remove'),
     mainBody:document.body,
     newfile_btn:document.getElementsByClassName("db_addfile"),
+    newfolder_btn:document.getElementsByClassName("db_addfolder"),
     addFile_btn:document.getElementsByClassName("bn33"),
     file_delete_btns:document.getElementsByClassName("file_delete_btn"),
     preview_btns:document.getElementsByClassName("preview_btn"),
+    privacy_btns:document.getElementsByClassName("privacy_btn"),
     preview_close_btn:document.getElementsByClassName("preview_close_btn"),
-    preview:document.getElementsByClassName("preview")
+    preview:document.getElementsByClassName("preview"),
+    logout_btn:document.getElementsByClassName("logout_btn"),
+
 };
 
 export const elementStrings = {

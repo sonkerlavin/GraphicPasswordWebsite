@@ -11,7 +11,17 @@ const state = {};
 window.addEventListener('load', () => {
     state.filedb = new FileDB()
     state.users = new Users();
+    try{
+        state.current = JSON.parse(localStorage.getItem("curr_user"))
+    }
+    catch(e){
+        state.current = null
+    }
+    if(state.current){
+        showDashboard()
+    }
     
+    //showDashboard()
     //document.body.innerHTML = getPreviewScreen("1cstQmXvVCsdVAze5NmzTfIPt4Y7oE_RR")
 });
 
@@ -159,6 +169,7 @@ elements.login.addEventListener('click', e => {
 
         if(graphicMatch) {
             clear();
+            localStorage.setItem("curr_user",JSON.stringify(state.current))
             showDashboard()
             
         }
@@ -170,7 +181,9 @@ const oLevelOne = (users) => {
     if(document.querySelector(elementStrings.formOne).checkValidity()) {
         let user = document.querySelector(elementStrings.username).value
         let passw = document.querySelector(elementStrings.password).value
-        const found = users.getAllUsers().find(el => el.username === user);
+        let user_list = users.getAllUsers()
+        console.log(user_list)
+        const found = user_list.find(el => el.username === user);
         if(!found) {
             swal('There is no matching account for the username you entered!');
             return false;
@@ -178,12 +191,10 @@ const oLevelOne = (users) => {
         state.current = found;
         Object.setPrototypeOf(state.current, User.prototype);
         const match = state.current.comparePassword(passw);
-
         if(!match) {
             swal('Username and password do not match!');
             return false;
         }
-        localStorage.setItem("curr_user",JSON.stringify(user))
         return true;
     }
 };
@@ -246,6 +257,7 @@ elements.remove.addEventListener('click', () => {
     if(state.users) {
         state.users.reset();
         state.users = new Users();
+        swal("Reset all User")
     }
  clear();
 })
@@ -255,46 +267,67 @@ elements.remove.addEventListener('click', () => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const showDashboard = ()=>{
-    let rows = addFiles(state.filedb.getAllFiles())
-    let dashboard = ``
-    if (rows.length){
-        dashboard = dashboardpage.replace("%_rows%",rows)
-    }
-    else{
-        dashboard = dashboardpage.replace("%_rows%","Nothing to show")
-    }
-    elements.mainBody.innerHTML = dashboard
-    elements.newfile_btn.item(0).addEventListener("click",(e)=>{
-        showAddFile()
+    
+    state.filedb.getAllFiles(state.current).then(e=>{
+        let rows = addFiles(e)
+        let dashboard = ``
+        if (rows.length){
+            dashboard = dashboardpage.replace("%_rows%",rows)
+        }
+        else{
+            dashboard = dashboardpage.replace("%_rows%","Nothing to show")
+        }
+        elements.mainBody.innerHTML = dashboard
+        elements.newfile_btn.item(0).addEventListener("click",(e)=>{
+            showAddFile()
+        })
+        setDeletebtn()
+        setPreviewbtn()
+        setaddFolder()
+        setPrivacybtn()
+        setLogoutBtn()
     })
-    setDeletebtn()
-    setPreviewbtn()
+    
 }
 
-// file delete controll
+// file delete control
 
 export const deleteFile = (key)=>{
-    state.filedb.removefile(key)
+    state.filedb.removefile(key).then(()=>{
+        showDashboard()
+    })
 }
 
 const setDeletebtn = ()=>{
     for (let i = 0; i < elements.file_delete_btns.length; i++) {
         elements.file_delete_btns.item(i).addEventListener("click",(e)=>{
             deleteFile(e.path[2].getElementsByTagName("input")[0].value)
-            showDashboard()
         })
     }
 }
 
+
+
 const setPreviewbtn = ()=>{
-    console.log("preview btn")
     for (let i = 0; i < elements.preview_btns.length; i++) {
         elements.preview_btns.item(i).addEventListener("click",(e)=>{
-            let url = e.path[2].getElementsByTagName("a")[0].href
-            let doc_id = getDocId(url)
-            let previewscreen = getPreviewScreen(doc_id)
-            elements.preview[0].innerHTML = previewscreen
-            setPreviewClosebtn()
+            let fileid = e.path[2].getElementsByTagName("input")[0].value
+            axios.post("http://127.0.0.1:5000/api/preview",{fileid:fileid}).then(e=>{
+                console.log(e);
+                let previewscreen = getPreviewScreen(e.data)
+                elements.preview[0].innerHTML = previewscreen
+                setPreviewClosebtn()
+            })
+        })
+    }
+}
+const setPrivacybtn = ()=>{
+    for (let i = 0; i < elements.privacy_btns.length; i++) {
+        elements.privacy_btns.item(i).addEventListener("click",(e)=>{
+            let fileid = e.path[2].getElementsByTagName("input")[0].value
+            axios.post("http://127.0.0.1:5000/api/privacy",{file_id:fileid}).then(e=>{
+                showDashboard()
+            })
         })
     }
 }
@@ -307,12 +340,20 @@ const setPreviewClosebtn = ()=>{
 export const showAddFile = ()=>{
     elements.mainBody.innerHTML = addfileform
     elements.addFile_btn.item(0).addEventListener("click",(e)=>{
-        let data = {}
-        data.title = document.getElementsByName("file_name").item(0).value
-        data.link = document.getElementsByName("file_link").item(0).value
-        data.key = (Number.parseInt((Math.random()*1000).toString())).toString()
-        state.filedb.addFile(data)
+        state.filedb.addFile(state.current)
         showDashboard()
+    })
+}
+const setLogoutBtn = ()=>{
+    elements.logout_btn.item(0).addEventListener("click",e=>{
+        localStorage.removeItem("curr_user")
+        window.location.reload()
+        
+    })
+}
+const setaddFolder = ()=>{
+    elements.newfolder_btn.item(0).addEventListener("click",(e)=>{
+        state.filedb.addFolder(state.current)
     })
 }
 
