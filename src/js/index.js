@@ -1,4 +1,4 @@
-import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree} from './views/base';
+import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree,renderFour} from './views/base';
 import swal from 'sweetalert';
 import User from './models/userModel';
 import Users from './models/allusers';
@@ -7,10 +7,11 @@ import {dashboardpage,addFiles} from "./views/dashboard"
 import {addfileform} from "./views/Addfiles"
 import { getDocId, getPreviewScreen } from './views/PreviewScreen';
 // Reloads
-const state = {};
+const state = {error:0};
 window.addEventListener('load', () => {
     state.filedb = new FileDB()
     state.users = new Users();
+    
     try{
         state.current = JSON.parse(localStorage.getItem("curr_user"))
     }
@@ -21,8 +22,6 @@ window.addEventListener('load', () => {
         showDashboard()
     }
     
-    //showDashboard()
-    //document.body.innerHTML = getPreviewScreen("1cstQmXvVCsdVAze5NmzTfIPt4Y7oE_RR")
 });
 
 // Registeration Controller
@@ -45,6 +44,7 @@ elements.register.addEventListener('click', e => {
 
     //2. RGB Pattern
     if(e.target.matches(elementStrings.icon)) {
+        console.log(e)
         const color = e.target.closest(elementStrings.icon).id;
         updatePattern(color);
 
@@ -66,15 +66,32 @@ elements.register.addEventListener('click', e => {
     if(e.target.matches(elementStrings.nextHR)) {
         rLevelThree();
         clear();
-        let message = state.users.addUser(state.current);
-        message.then(e=>{
-            if(e == "success"){
-                swal('Registration successful!');
+        renderFour("register")
+        let button = document.querySelector(elementStrings.nextFR)
+        console.log(button)
+        button.addEventListener("click",(e)=>{
+            let answer = document.querySelector(elementStrings.securityquest)
+            console.log(answer.value)
+            if(answer.value.length == 0){
+                swal("Please enter your anwser")
             }
             else{
-                swal('Registration Fail!');
+                state.current.addAnswer(answer.value)
+                console.log(state.current)
+                let message = state.users.addUser(state.current);
+                message.then(e=>{
+                    if(e == "success"){
+                        swal('Registration successful!');
+                        clear()
+                    }
+                    else{
+                        swal('Registration Fail!');
+                        clear()
+                    }
+                })
             }
         })
+         
         
     }
 });
@@ -127,6 +144,8 @@ const rLevelThree = () => {
     state.current.addGrid(grid);
 };
 
+
+
 // Log in Controller
 elements.loginTop.addEventListener('click', () => {
     clear();
@@ -137,9 +156,11 @@ elements.login.addEventListener('click', e => {
 
     //1. Password
     if(e.target.matches(elementStrings.nextOL)) {
+        
         const passwordMatch = oLevelOne(state.users);
         if(passwordMatch) {
             clear();
+            state.error = 0
             renderTwo('login');  
         }
     }
@@ -148,7 +169,6 @@ elements.login.addEventListener('click', e => {
     if(e.target.matches(elementStrings.icon)) {
         const color = e.target.closest(elementStrings.icon).id;
         updatePattern(color);
-
     } else if(e.target.matches(`${elementStrings.group}, ${elementStrings.group} *`)) {
 
         if(e.target.closest(elementStrings.reset)) {
@@ -158,6 +178,7 @@ elements.login.addEventListener('click', e => {
             const patternMatch = oLevelTwo();
             if(patternMatch) {
                 clear();
+                state.error = 0
                 renderThree('login');
             }
         }
@@ -166,11 +187,20 @@ elements.login.addEventListener('click', e => {
     //3. Grid
     if(e.target.matches(elementStrings.nextHL)) {
         const graphicMatch = oLevelThree();
-
         if(graphicMatch) {
             clear();
             localStorage.setItem("curr_user",JSON.stringify(state.current))
+            state.error = 0
             showDashboard()
+            // if(state.error >= 3){
+            //     renderFour("login")
+            //     oLvelFour()
+            // }
+            // else{
+            //     clear();
+            //     localStorage.setItem("curr_user",JSON.stringify(state.current))
+            //     showDashboard()
+            // }
             
         }
     }
@@ -200,11 +230,18 @@ const oLevelOne = (users) => {
 };
 
 const oLevelTwo = () => {
+    
     if(document.querySelector(elementStrings.formTwo).checkValidity()) {
         const pattern = document.querySelector(elementStrings.pattern).value;
         const match = state.current.comparePattern(pattern);
         if(!match) {
             swal('The color pattern you entered does not match that associated with the username!');
+            state.error += 1
+            console.log(state.error)
+            if(state.error >=3){
+                renderFour("login")
+                oLvelFour()
+            }
             clearFields();
             return false;
         }
@@ -225,12 +262,34 @@ const oLevelThree = () => {
     const match = state.current.compareGrid(grid);
     if(!match) {
         swal('The current locations of the images do not match those associated with the username!');
+        state.error += 1
+        if(state.error >=3){
+            renderFour("login")
+            oLvelFour()
+        }
         return false;
     }
     return true;
 }
 ;
 
+const oLvelFour = ()=>{
+    let loginbtn = document.querySelector("#login--four")
+    console.log(loginbtn)
+    loginbtn.addEventListener("click",(e)=>{
+        let answer = document.querySelector(elementStrings.securityquest)
+        let check = state.current.compareAnswer(answer.value)
+        if(check){
+            clear();
+            localStorage.setItem("curr_user",JSON.stringify(state.current))
+            state.error = 0
+            showDashboard()
+        }
+        else{
+            swal("Wrong answer")
+        }
+    })
+}
 // Drag and Drop
 document.addEventListener('dragover', e => {
     e.preventDefault();

@@ -22,15 +22,18 @@ export const elements = {
 export const elementStrings = {
     formOne: '#form--1',
     formTwo: '#form--2',
+    formFour:"#form--4",
     group: '.form__group',
     icon: '.circle',
     username: '#username',
     password: '#password',
     pattern: '#pattern',
+    securityquest: "#securityquest",
     reset: '#reset',
     nextOR: '#register--one',
     nextTR: '#register--two',
     nextHR: '#register--three',
+    nextFR: "#register--four",
     nextOL: '#login--one',
     nextTL: '#login--two',
     nextHL: '#login--three',
@@ -70,15 +73,41 @@ const markups = {
                 <p class="paragraph">%_DESCRIPTION%</p>
             </div>
             <div class="row">
-                <div class="col-1-of-5">&nbsp;</div>
                     <div class="col-1-of-5">
-                        <span id="red" class="circle circle--red">&nbsp;</span>
+                        <span id="purple" class="circle circle--purple">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="yellow" class="circle circle--yellow">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="blue" class="circle circle--blue">&nbsp;</span>
                     </div>
                     <div class="col-1-of-5">
                         <span id="green" class="circle circle--green">&nbsp;</span>
                     </div>
                     <div class="col-1-of-5">
-                        <span id="blue" class="circle circle--blue">&nbsp;</span>
+                        <span id="black" class="circle circle--black">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="brown" class="circle circle--brown">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="red" class="circle circle--red">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="white" class="circle circle--white">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="pink" class="circle circle--pink">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="orange" class="circle circle--orange">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="grey" class="circle circle--grey">&nbsp;</span>
+                    </div>
+                    <div class="col-1-of-5">
+                        <span id="skyblue" class="circle circle--skyblue">&nbsp;</span>
                     </div>
                     <div class="col-1-of-5">&nbsp;</div>
                 </div>
@@ -110,6 +139,29 @@ const markups = {
             <button type="button" id="%_BTNLEVEL%" class="btn btn--primary">%_BTNDESC%</button>
         </div>
     </div>`,
+
+    four:`
+    <div class="container">
+        <div class="container__icons">
+            <div class="margin-bottom center-text">
+                <h2 class="sub-heading">Level Four</h2>
+                <p class="paragraph">%_DESCRIPTION%</p>
+            </div>
+            </div>
+            <div class="container__form">
+            <form class="form" id="form--4" autocomplete="off">
+                <div class="form__group">
+                    <input type="text" class="form__input" placeholder="Answer" id="securityquest" required />
+                    <label for="pattern" class="form__label">Question</label>
+                </div>
+                <div class="form__group">
+                    <button type="button" id="reset" class="btn btn--primary">Reset</button>
+                    <button type="button" id="%_BTNLEVEL%" class="btn btn--primary btn--right">Next &rarr;</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>`,
 };
 
 const replacements = {
@@ -118,7 +170,9 @@ const replacements = {
     twoLD: 'Please click on the colors below in the order you picked during registration.',
     twoRD: 'Please click on the colors below in any order to create a pattern.',
     threeLD: 'Please drag and drop the images below to the locations you specified during registration.',
-    threeRD: 'Please drag and drop the images below to your preferred locations to create a graphical pattern.'
+    threeRD: 'Please drag and drop the images below to your preferred locations to create a graphical pattern.',
+    fourLD: 'Please enteryour answer.',
+    fourRD: 'Please enter your answer.',
 };
 
 const placeholders = {
@@ -153,7 +207,6 @@ export const renderOne = (type) => {
         markup = markup.replace(placeholders.description, replacements.oneRD);
         elements.register.innerHTML = markup;
     }
-    
 };
 
 export const renderTwo = (type) => {
@@ -166,6 +219,7 @@ let markup = markups.two.replace(placeholders.buttonLevel, `${type}--two`);
         elements.register.innerHTML = markup;
     }
 }
+
 
 export const renderThree = (type) => {
     let markup = markups.three.replace(placeholders.buttonLevel, `${type}--three`);
@@ -181,5 +235,13 @@ export const renderThree = (type) => {
     Grid.addImages();
 }
 
-
-
+export const renderFour = (type) => {
+    let markup = markups.four.replace(placeholders.buttonLevel, `${type}--four`);
+        if (type === 'login') {
+            markup = markup.replace(placeholders.description, replacements.fourLD);
+            elements.login.innerHTML = markup;
+        } else if (type === 'register') {
+            markup = markup.replace(placeholders.description, replacements.fourRD);
+            elements.register.innerHTML = markup;
+        }
+    }

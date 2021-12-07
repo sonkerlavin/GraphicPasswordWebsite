@@ -1,13 +1,14 @@
 export const create = () => {
     return `<div class="graphic__row">${addCells(1)}</div>
-    <div class="graphic__row">${addCells(5)}</div>
-    <div class="graphic__row">${addCells(9)}</div>
-    <div class="graphic__row">${addCells(13)}</div>`;
+    <div class="graphic__row">${addCells(6)}</div>
+    <div class="graphic__row">${addCells(11)}</div>
+    <div class="graphic__row">${addCells(16)}</div>
+    <div class="graphic__row">${addCells(21)}</div>`;
 }
 
 export const addCells = (start) => {
     let markup = ``;
-    for(let i=start; i<start+4; i++) {
+    for(let i=start; i<start+5; i++) {
         markup+= `<div
             class="graphic__row--drop"
             id="cell-${i}"></div>`;
@@ -16,15 +17,15 @@ export const addCells = (start) => {
 }
 
 export const addImages = () => {
-    const images = ['python', 'java', 'android', 'javascript'];
+    const images = ['python', 'java', 'android', 'javascript',"ruby","C","cpp","tensorflow","R","dart"];
     const cells = [];
-    while(cells.length < 4) {
+    while(cells.length < 10) {
         let randomIndex = Math.floor(Math.random() * 16) + 1;
         if(!cells.includes(randomIndex)) {
             cells.push(randomIndex);
         }
     }
-
+    console.log(cells)
     cells.forEach((cur, i) => {
         document.getElementById(`cell-${cur}`).insertAdjacentHTML('beforeend', 
         `<img

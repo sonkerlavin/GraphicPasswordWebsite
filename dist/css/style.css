@@ -121,6 +121,33 @@ body {
 .circle--green {
   background-color: #00ff00;
 }
+.circle--purple {
+  background-color: purple;
+}
+.circle--yellow {
+  background-color: yellow;
+}
+.circle--black {
+  background-color: black;
+}
+.circle--brown {
+  background-color: brown;
+}
+.circle--white {
+  background-color: white;
+}
+.circle--pink {
+  background-color: #fdaab8;
+}
+.circle--orange {
+  background-color: orange;
+}
+.circle--grey {
+  background-color: grey;
+}
+.circle--skyblue {
+  background-color: skyblue;
+}
 
 .form__group:not(:last-child) {
   margin-bottom: 2rem;
@@ -184,7 +211,7 @@ body {
   position: relative;
   background-color: #fff;
   display: inline-block;
-  width: calc((100% - 12rem) / 4);
+  width: calc((100% - 10rem) / 6);
   height: 10rem;
   padding: 1rem;
   border: 1px solid #da7b93;

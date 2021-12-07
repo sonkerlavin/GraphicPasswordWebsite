@@ -29,6 +29,9 @@ export default class User {
         this.grid = this.encrypt(grid);
     }
 
+    addAnswer(answer) {
+        this.answer = this.encrypt(answer);
+    }
     comparePassword(password) {
         return this.textpassword === this.encrypt(password);
     }
@@ -40,7 +43,9 @@ export default class User {
     compareGrid(grid) {
         return this.gridpassword === this.encrypt(grid);
     }
-
+    compareAnswer(answer) {
+        return this.answer === this.encrypt(answer);
+    }
     encrypt(text) {
         return crypto.createHash('sha256').update(text).digest('hex');
     }

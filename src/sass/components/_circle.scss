@@ -1,3 +1,4 @@
+
 .circle {
   width: 6rem;
   height: 6rem;
@@ -21,14 +22,39 @@
   }
 
   &--red {
-    background-color: $red;
+    background-color:$red;
   }
-
-  &--blue {
+  &--blue{
     background-color: $blue;
   }
-
   &--green {
     background-color: $green;
+  }
+  &--purple {
+    background-color: purple;
+  }
+  &--yellow {
+    background-color: yellow;
+  }
+  &--black {
+    background-color: black;
+  }
+  &--brown {
+    background-color: brown;
+  }
+  &--white {
+    background-color: white;
+  }
+  &--pink {
+    background-color: rgb(253, 170, 184);
+  }
+  &--orange {
+    background-color: orange;
+  }
+  &--grey {
+    background-color: grey;
+  }
+  &--skyblue {
+    background-color: skyblue;
   }
 }
