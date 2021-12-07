@@ -59,10 +59,7 @@ const markups = {
                     <input type="password" class="form__input" placeholder="password" id="password" minlength="6" required />
                     <label for="password" class="form__label">password</label>
                 </div>
-                <div class="form__group">
-                    <input type="password" class="form__input" placeholder="Retype password" id="retype_password" minlength="6" required />
-                    <label for="password" class="form__label">Retype password</label>
-                </div>
+                %_retypepassword_%
                 <div class="form__group">
                     <button id="%_BTNLEVEL%" class="btn btn--primary">Next &rarr;</button>
                 </div>
@@ -153,8 +150,12 @@ const markups = {
                 <p class="paragraph">%_DESCRIPTION%</p>
             </div>
             </div>
+            <p style = "text-align:center;font-size:24px;">
+                What is Your pet name ?
+            </p>
             <div class="container__form">
             <form class="form" id="form--4" autocomplete="off">
+                
                 <div class="form__group">
                     <input type="text" class="form__input" placeholder="Answer" id="securityquest" required />
                     <label for="pattern" class="form__label">Question</label>
@@ -207,9 +208,14 @@ export const renderOne = (type) => {
     let markup = markups.one.replace(placeholders.buttonLevel, `${type}--one`);
     if (type === 'login') {
         markup = markup.replace(placeholders.description, replacements.oneLD);
+        markup = markup.replace("%_retypepassword_%",``)
         elements.login.innerHTML = markup;
     } else if (type === 'register') {
         markup = markup.replace(placeholders.description, replacements.oneRD);
+        markup = markup.replace("%_retypepassword_%",`<div class="form__group">
+        <input type="password" class="form__input" placeholder="Retype password" id="retype_password" minlength="6" required />
+        <label for="password" class="form__label">Retype password</label>
+    </div>`)
         elements.register.innerHTML = markup;
     }
 };

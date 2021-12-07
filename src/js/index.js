@@ -5,7 +5,7 @@ import Users from './models/allusers';
 import { FileDB } from './models/UserFile';
 import {dashboardpage,addFiles} from "./views/dashboard"
 import {addfileform} from "./views/Addfiles"
-import { getDocId, getPreviewScreen } from './views/PreviewScreen';
+import {  getPreviewScreen } from './views/PreviewScreen';
 // Reloads
 const state = {error:0};
 window.addEventListener('load', () => {
@@ -44,7 +44,6 @@ elements.register.addEventListener('click', e => {
 
     //2. RGB Pattern
     if(e.target.matches(elementStrings.icon)) {
-        console.log(e)
         const color = e.target.closest(elementStrings.icon).id;
         updatePattern(color);
 
@@ -68,16 +67,13 @@ elements.register.addEventListener('click', e => {
         clear();
         renderFour("register")
         let button = document.querySelector(elementStrings.nextFR)
-        console.log(button)
         button.addEventListener("click",(e)=>{
             let answer = document.querySelector(elementStrings.securityquest)
-            console.log(answer.value)
             if(answer.value.length == 0){
                 swal("Please enter your anwser")
             }
             else{
                 state.current.addAnswer(answer.value)
-                console.log(state.current)
                 let message = state.users.addUser(state.current);
                 message.then(e=>{
                     if(e == "success"){
@@ -197,15 +193,7 @@ elements.login.addEventListener('click', e => {
             localStorage.setItem("curr_user",JSON.stringify(state.current))
             state.error = 0
             showDashboard()
-            // if(state.error >= 3){
-            //     renderFour("login")
-            //     oLvelFour()
-            // }
-            // else{
-            //     clear();
-            //     localStorage.setItem("curr_user",JSON.stringify(state.current))
-            //     showDashboard()
-            // }
+          
             
         }
     }
@@ -217,7 +205,6 @@ const oLevelOne = (users) => {
         let user = document.querySelector(elementStrings.username).value
         let passw = document.querySelector(elementStrings.password).value
         let user_list = users.getAllUsers()
-        console.log(user_list)
         const found = user_list.find(el => el.username === user);
         if(!found) {
             swal('There is no matching account for the username you entered!');
@@ -242,7 +229,6 @@ const oLevelTwo = () => {
         if(!match) {
             swal('The color pattern you entered does not match that associated with the username!');
             state.error += 1
-            console.log(state.error)
             if(state.error >=3){
                 renderFour("login")
                 oLvelFour()
@@ -280,7 +266,6 @@ const oLevelThree = () => {
 
 const oLvelFour = ()=>{
     let loginbtn = document.querySelector("#login--four")
-    console.log(loginbtn)
     loginbtn.addEventListener("click",(e)=>{
         let answer = document.querySelector(elementStrings.securityquest)
         let check = state.current.compareAnswer(answer.value)
@@ -378,7 +363,6 @@ const setPreviewbtn = ()=>{
         elements.preview_btns.item(i).addEventListener("click",(e)=>{
             let fileid = e.path[2].getElementsByTagName("input")[0].value
             axios.post("http://127.0.0.1:5000/api/preview",{fileid:fileid}).then(e=>{
-                console.log(e);
                 let previewscreen = getPreviewScreen(e.data)
                 elements.preview[0].innerHTML = previewscreen
                 setPreviewClosebtn()
