@@ -81,6 +81,7 @@ elements.register.addEventListener('click', e => {
                 let message = state.users.addUser(state.current);
                 message.then(e=>{
                     if(e == "success"){
+                        state.users.restore()
                         swal('Registration successful!');
                         clear()
                     }
@@ -107,6 +108,10 @@ const rLevelOne = (users) => {
             swal('A user with the same username already exists! Please choose another username.');
             clearFields();
             return false;
+        }
+        if(document.querySelector(elementStrings.password).value != document.querySelector(elementStrings.retypepassword).value){
+            swal("Password not match")
+            return false
         }
         return true;
     }
@@ -316,6 +321,7 @@ elements.remove.addEventListener('click', () => {
     if(state.users) {
         state.users.reset();
         state.users = new Users();
+
         swal("Reset all User")
     }
  clear();
@@ -399,8 +405,10 @@ const setPreviewClosebtn = ()=>{
 export const showAddFile = ()=>{
     elements.mainBody.innerHTML = addfileform
     elements.addFile_btn.item(0).addEventListener("click",(e)=>{
-        state.filedb.addFile(state.current)
-        showDashboard()
+        state.filedb.addFile(state.current).then(()=>{
+            showDashboard()
+        })
+        
     })
 }
 const setLogoutBtn = ()=>{

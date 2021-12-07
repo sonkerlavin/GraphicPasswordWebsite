@@ -3,12 +3,17 @@ export class FileDB{
         this.allfiles = []
             
     }
+    loadAllFiles(user){
+        return axios.post("http://127.0.0.1:5000/api/allfiles",{userid:user.id}).then(e=>{
+            this.allfiles = e.data
+            return this.allfiles
+        })
+    }
     addFile(user){
         let inp = `<input type = "number" hidden name = "user_id" value = ${user.id} />`
         $("#upload-file").append(inp)
         var form_data = new FormData($('#upload-file')[0]);
-        console.log(form_data)
-        $.ajax({
+        return $.ajax({
             type: 'POST',
             url: 'http://127.0.0.1:5000/api/addfile',
             data: form_data,
@@ -19,17 +24,12 @@ export class FileDB{
                 swal('File uploaded');
             },
         })
-        //this.loadAllFiles()
-    }
-    loadAllFiles(userid){
-        return axios.post("http://127.0.0.1:5000/api/allfiles",{userid:userid.id}).then(e=>{
-            this.allfiles = e.data
-            return this.allfiles
-        })
-    }
-    getAllFiles(userid){
         
-        return this.loadAllFiles(userid).then(e=>{
+        
+    }
+    getAllFiles(user){
+        
+        return this.loadAllFiles(user).then(e=>{
             this.allfiles = e
             return this.allfiles
         })

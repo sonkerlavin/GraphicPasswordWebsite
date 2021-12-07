@@ -27,6 +27,7 @@ export const elementStrings = {
     icon: '.circle',
     username: '#username',
     password: '#password',
+    retypepassword :"#retype_password",
     pattern: '#pattern',
     securityquest: "#securityquest",
     reset: '#reset',
@@ -57,6 +58,10 @@ const markups = {
                 <div class="form__group">
                     <input type="password" class="form__input" placeholder="password" id="password" minlength="6" required />
                     <label for="password" class="form__label">password</label>
+                </div>
+                <div class="form__group">
+                    <input type="password" class="form__input" placeholder="Retype password" id="retype_password" minlength="6" required />
+                    <label for="password" class="form__label">Retype password</label>
                 </div>
                 <div class="form__group">
                     <button id="%_BTNLEVEL%" class="btn btn--primary">Next &rarr;</button>

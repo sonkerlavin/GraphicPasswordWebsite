@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import swal from 'sweetalert';
 
 export default class User {
     constructor() {
@@ -15,7 +16,6 @@ export default class User {
         if(a.includes(false)) {
             return false;
         }
-
         this.username = username;
         this.password = this.encrypt(password);
         return true;
