@@ -23,8 +23,9 @@ export const tablerow = `
 `
 export const dashboardpage = `
 <div class = "db_main_container">
-    <div style = "display:flex; align-items:flex-end">
+    <div style = "display:flex; flex-direction:"row"; align-items:flex-end">
         <button class = "logout_btn" style = "margin:10px 10px;background-color:transparent;padding:5px 10px;border-radius:5px">Logout</button>
+        <button class = "notification_btn" style = "margin:10px; margin-left:80%;background-color:transparent;padding:5px 10px;border-radius:5px">Notification</button>
     </div>
     <div class = "db_button_container">
         <input type = 'button' value = "Add new file" id = "show_addfile_btn" class = "db_addfile" />

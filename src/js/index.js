@@ -1,9 +1,10 @@
-import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree,renderFour} from './views/base';
+import {elements, elementStrings, clear, clearFields, updatePattern, renderOne, renderTwo, renderThree,renderFour, messages} from './views/base';
 import swal from 'sweetalert';
 import User from './models/userModel';
 import Users from './models/allusers';
 import { FileDB } from './models/UserFile';
 import {dashboardpage,addFiles} from "./views/dashboard"
+import {notificationpage,addNotification,PreviewScreen} from "./views/notification"
 import {addfileform} from "./views/Addfiles"
 import {  getPreviewScreen } from './views/PreviewScreen';
 // Reloads
@@ -215,7 +216,14 @@ const oLevelOne = (users) => {
         const match = state.current.comparePassword(passw);
         if(!match) {
             swal('Username and password do not match!');
-            return false;
+            axios.post("http://127.0.0.1:5000/api/addnotification",{userid:state.current.id,title:"Wronge Password",message:messages.loginfail}).then(e=>{
+                console.log(e)
+                return false;
+            },err=>{
+                console.log(err)
+                return false
+            })
+            return false
         }
         return true;
     }
@@ -229,12 +237,19 @@ const oLevelTwo = () => {
         if(!match) {
             swal('The color pattern you entered does not match that associated with the username!');
             state.error += 1
+            axios.post("http://127.0.0.1:5000/api/addnotification",{userid:state.current.id,title:"Wronge Color Pattern",message:messages.loginfail}).then(e=>{
+                console.log(e)
+                return false;
+            },err=>{
+                console.log(err)
+                return false
+            })
             if(state.error >=3){
                 renderFour("login")
                 oLvelFour()
             }
             clearFields();
-            return false;
+            return false
         }
         return true;
     }
@@ -254,11 +269,18 @@ const oLevelThree = () => {
     if(!match) {
         swal('The current locations of the images do not match those associated with the username!');
         state.error += 1
+        axios.post("http://127.0.0.1:5000/api/addnotification",{userid:state.current.id,title:"Wronge Image Pattern",message:messages.loginfail}).then(e=>{
+            console.log(e)
+            return false;
+        },err=>{
+            console.log(err)
+            return false
+        })
         if(state.error >=3){
             renderFour("login")
             oLvelFour()
         }
-        return false;
+        return false
     }
     return true;
 }
@@ -336,6 +358,7 @@ const showDashboard = ()=>{
         setaddFolder()
         setPrivacybtn()
         setLogoutBtn()
+        setNotificationBtn()
     })
     
 }
@@ -402,9 +425,49 @@ const setLogoutBtn = ()=>{
         
     })
 }
+
 const setaddFolder = ()=>{
     elements.newfolder_btn.item(0).addEventListener("click",(e)=>{
         state.filedb.addFolder(state.current)
     })
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*                                                    Notification                                             */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export function ShowNotificaionPage(){
+    axios.post("http://127.0.0.1:5000/api/getnotification",{userid:state.current.id}).then(e=>{
+        console.log(e.data)
+        let notificationRow = addNotification(e.data)
+        let notipage = notificationpage.replace("%_rows%",notificationRow)
+        elements.mainBody.innerHTML = notipage
+        setopen_notification_btn()
+    })
+    
+}
+const setNotificationBtn = ()=>{
+    elements.notification_btn.item(0).addEventListener("click",e=>{
+        ShowNotificaionPage()
+    })
+}
+const setopen_notification_btn = ()=>{
+    const allbtns = elements.open_notification_btn
+    for (let i = 0; i < allbtns.length; i++) {
+        allbtns.item(i).addEventListener("click",(e)=>{
+            let id = e.path[2].getElementsByTagName("input")[0].value
+            axios.post("http://127.0.0.1:5000/api/getonenotification",{id:id}).then(v=>{
+            
+            let data = v.data
+            let html = PreviewScreen.replace("%_title_%",data["title"])
+            html  = html.replace("%_message_%",data["message"])
+            elements.mainBody.innerHTML = html
+            setnotification_close_btn()
+            })
+        })
+    }   
+}
+const setnotification_close_btn = ()=>{
+    elements.close_notifiation.item(0).addEventListener("click",(e)=>{
+        ShowNotificaionPage()
+    })
+} 

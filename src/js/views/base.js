@@ -16,8 +16,15 @@ export const elements = {
     preview_close_btn:document.getElementsByClassName("preview_close_btn"),
     preview:document.getElementsByClassName("preview"),
     logout_btn:document.getElementsByClassName("logout_btn"),
+    notification_btn:document.getElementsByClassName("notification_btn"),
+    open_notification_btn:document.getElementsByClassName("open_notification_btn"),
+    close_notifiation:document.getElementsByClassName("notification_close_btn")
 
 };
+
+export const messages = {
+    loginfail: 'Someone trying to login your account',
+}
 
 export const elementStrings = {
     formOne: '#form--1',
